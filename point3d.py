@@ -32,9 +32,8 @@ class Point3d:
         elif name == 'z':
             return self.coords[2]
 
-    def __getitem__(self,key):
+    def __getitem__(self, key):
         return self.coords[key]
-
 
     def __setattr__(self, name, value):
         """ For x, y, and z sets coords[0], [1], and [2].
@@ -47,6 +46,9 @@ class Point3d:
             self.coords[2] = value
         else:
             self.__dict__[name] = value
+
+    def __setitem__(self, key, value):
+        self.coords[key] = value
 
     def __repr__(self):
         return "Point3d({0}, {1}, {2})".format(self.x, self.y, self.z)
@@ -98,9 +100,36 @@ if __name__ == '__main__':
     print "p[2] ->", p[2]
 
     print "\nSetters:"
+    p.x = 10
+    print "p.x = 10 ->", p.x
+    p.y = 10
+    print "p.y = 10 ->", p.y
+    p.z = 10
+    print "p.z = 10 ->", p.z
+    p.coords = np.array([1,2,3])
+    print "This next one is not recommended at all."
+    print "p.coords = np.array([1,2,3]) ->", p
+    p.coords[0] = 10
+    print "p.coords[0] = 10 ->", p[0]
+    p.coords[1] = 10
+    print "p.coords[1] = 10 ->", p[1]
+    p.coords[2] = 10
+    print "p.coords[2] = 10 ->", p[2]
+    p[0] = 1
+    print "p[0] = 1 ->", p[0]
+    p[1] = 1
+    print "p[1] = 1 ->", p[1]
+    p[2] = 1
+    print "p[2] = 1 ->", p[2]
+
     print "\nOperators:"
+    
+    
+
     print "\nIterators:"
+
     print "\nCoordinate Systems:"
+
     print "\nTransformations:"
 
 
