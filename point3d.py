@@ -1,25 +1,34 @@
 import numpy as np
 
-class Point3d:
-    def __init__(self, x=0., y=0., z=0, **kwargs):
+class Point3d(object):
+    def __init__(self, x=0, y=0, z=0):
+        if type(x) == list:
+            # if receives a list
+            try:
+                assert len(x) == 3
+                self.coords = np.array(x+[1],dtype=np.float64)
+            except:
+                raise ValueError('To create a Point3d with a list it must have length 3')
+        elif type(x) == tuple:
+            # if receives a tuple
+            try:
+                assert len(x) == 3
+                self.coords = np.array(list(x)+[1],dtype=np.float64)
+            except:
+                raise ValueError('To create a Point3d with a tuple it must have length 3')
+        elif type(x) == np.ndarray:
+            try:
+                assert x.ndim == 1 and x.size == 4 and x[3] == 1
+                self.coords = np.array(x, dtype=np.float64)
+            except:
+                print "ndim", x.ndim
+                print "size", x.size
+                print "[3]", x[3]
+                raise ValueError('To create a Point3d with an np.array it must have ndim 1, size 4, and the last element must be 1')
+        else:
+            self.coords = np.array([x,y,z,1], dtype=np.float64)
 
-        self.coords = np.array([x,y,z,1], dtype=np.float64)
         self.iter = 0
-
-        # if the argument list is given
-        if 'list' in kwargs:
-            if len(kwargs['list']) == 3:
-                self.coords = np.array(
-                    kwargs['list']+[1],
-                    dtype=np.float64
-                )
-        # if the argument tuple is given
-        if 'tuple' in kwargs:
-            if len(kwargs['tuple']) == 3:
-                self.coords = np.array(
-                    list(kwargs['tuple'])+[1],
-                    dtype=np.float64
-                )
 
 
     def __getattr__(self, name):
@@ -56,6 +65,35 @@ class Point3d:
     def __str__(self):
         return "({0}, {1}, {2})".format(self.x, self.y, self.z)
 
+    def __add__(self, other):
+        x = self.x + other.x
+        y = self.y + other.y
+        z = self.z + other.z
+        return Point3d(x,y,z)
+
+    def __sub__(self, other):
+        x = self.x - other.x
+        y = self.y - other.y
+        z = self.z - other.z
+        return Point3d(x,y,z)
+
+    def __mul__(self, other):
+        x = self.x * other
+        y = self.y * other
+        z = self.z * other
+        return Point3d(x,y,z)
+
+    def dot(self, other):
+        """ TODO """
+        return Point3d()
+
+
+    def __pos__(self):
+        return self
+
+    def __neg__(self):
+        return self * -1
+
     def __iter__(self):
         return self
 
@@ -78,10 +116,12 @@ if __name__ == '__main__':
     print "Point3d()      ->", p
     p = Point3d(1,2,3)
     print "Point3d(1,2,3) ->", p
-    p = Point3d(list=[1,2,3])
-    print "Point3d(list=[1,2,3])  ->", p
-    p = Point3d(tuple=[1,2,3])
-    print "Point3d(tuple=[1,2,3]) ->", p
+    p = Point3d([1,2,3])
+    print "Point3d([1,2,3]) ->", p
+    p = Point3d((1,2,3))
+    print "Point3d((1,2,3)) ->", p
+    p = Point3d(np.array([1,2,3,1]))
+    print "Point3d(np.array([1,2,3,1])) ->", p
 
     print "\nRepresentation:"
     print "repr(p) ->", repr(p)
@@ -123,8 +163,24 @@ if __name__ == '__main__':
     print "p[2] = 1 ->", p[2]
 
     print "\nOperators:"
-    
-    
+    i = Point3d(1,2,3)
+    j = Point3d(4,5,6)
+    print "i = Point3d(1,2,3)\nj = Point3d(4,5,6)\n"
+    print "+i ->", +i
+    print "-i ->", -i
+    print "i + j  ->", (i + j)
+    print "i - j  ->", (i - j)
+    i += j
+    print "i += j ->", i
+    i = Point3d(1,2,3)
+    i -= j
+    print "i -= j ->", i
+    i = Point3d(1,2,3)
+    print "i * 2  ->", i * 2
+    i *= 2
+    print "i *= 2 ->", i
+    # print "i.dot(j)  ->", i.dot(j)
+
 
     print "\nIterators:"
 
