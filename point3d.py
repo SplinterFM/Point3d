@@ -89,9 +89,13 @@ class Point3d(object):
         return Point3d(x,y,z)
 
     def dot(self, other):
-        """ TODO """
-        return Point3d()
+        return self.coords.dot(other.coords)
 
+    def cross(self, other):
+        a = np.array([self.x, self.y, self.z])
+        b = np.array([other.x, other.y, other.z])
+        c = np.cross(a,b)
+        return Point3d(list(c))
 
     def __pos__(self):
         return self
@@ -171,23 +175,27 @@ if __name__ == '__main__':
     print "p[2] = 1 ->", p[2]
 
     print "\nOperators:"
-    i = Point3d(1,2,3)
-    j = Point3d(4,5,6)
-    print "i = Point3d(1,2,3)\nj = Point3d(4,5,6)\n"
+    i = Point3d(1,0,0)
+    j = Point3d(0,1,0)
+    print "i = Point3d(1,0,0)\nj = Point3d(0,1,0)\n"
     print "+i ->", +i
     print "-i ->", -i
     print "i + j  ->", (i + j)
     print "i - j  ->", (i - j)
     i += j
     print "i += j ->", i
-    i = Point3d(1,2,3)
+    i = Point3d(1,0,0)
     i -= j
     print "i -= j ->", i
-    i = Point3d(1,2,3)
+    i = Point3d(1,0,0)
     print "i * 2  ->", i * 2
     i *= 2
     print "i *= 2 ->", i
-    # print "i.dot(j)  ->", i.dot(j)
+    i = Point3d(1,0,0)
+    print "i.dot(j)   ->", i.dot(j)
+    print "j.dot(i)   ->", j.dot(i)
+    print "i.cross(j) ->", i.cross(j)
+    print "j.cross(i) ->", j.cross(i)
 
 
     print "\nIterators:"
