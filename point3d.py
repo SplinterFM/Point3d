@@ -25,10 +25,15 @@ class Point3d(object):
                 print "size", x.size
                 print "[3]", x[3]
                 raise ValueError('To create a Point3d with an np.array it must have ndim 1, size 4, and the last element must be 1')
+        elif type(x) == Point3d:
+            self.coords = np.array(x.coords, dtype=np.float64)
         else:
             self.coords = np.array([x,y,z,1], dtype=np.float64)
 
         self.iter = 0
+
+    def copy(self):
+        return Point3d(self.coords)
 
 
     def __getattr__(self, name):
@@ -122,6 +127,9 @@ if __name__ == '__main__':
     print "Point3d((1,2,3)) ->", p
     p = Point3d(np.array([1,2,3,1]))
     print "Point3d(np.array([1,2,3,1])) ->", p
+    q = Point3d(p)
+    print "q = Point3d(p)   ->", q
+    print "q.copy() ->", q.copy()
 
     print "\nRepresentation:"
     print "repr(p) ->", repr(p)
@@ -147,7 +155,7 @@ if __name__ == '__main__':
     p.z = 10
     print "p.z = 10 ->", p.z
     p.coords = np.array([1,2,3])
-    print "This next one is not recommended at all."
+    print "# This next one is not recommended at all."
     print "p.coords = np.array([1,2,3]) ->", p
     p.coords[0] = 10
     print "p.coords[0] = 10 ->", p[0]
