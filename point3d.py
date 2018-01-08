@@ -1,3 +1,9 @@
+#############################################
+# Copyright (c) 2018 Fabricio JC Montenegro #
+# Version 1.0                               #
+# https://github.com/SplinterFM/Point3d     #
+#############################################
+
 import numpy as np
 import math
 
