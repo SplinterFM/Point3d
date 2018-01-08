@@ -118,6 +118,39 @@ class Point3d(object):
     def length(self):
         return math.sqrt(self.x**2 + self.y**2 + self.z**2)
 
+    def translate(self, vector):
+        self.x += vector.x
+        self.y += vector.y
+        self.z += vector.z
+
+    def rotateX(self, radians):
+        c = np.cos(radians)
+        s = np.sin(radians)
+        xmat = np.array([[1, 0, 0, 0],
+                        [0, c,-s, 0],
+                        [0, s, c, 0],
+                        [0, 0, 0, 1]])
+        self.coords = xmat.dot(self.coords)
+
+    def rotateY(self, radians):
+        c = np.cos(radians)
+        s = np.sin(radians)
+        ymat = np.array([[c, 0, s, 0],
+                        [ 0, 1, 0, 0],
+                        [-s, 0, c, 0],
+                        [ 0, 0, 0, 1]])
+        self.coords = ymat.dot(self.coords)
+
+    def rotateZ(self, radians):
+        c = np.cos(radians)
+        s = np.sin(radians)
+        zmat = np.array([[c, -s, 0, 0],
+                        [s, c, 0, 0],
+                        [0, 0, 1, 0],
+                        [0, 0, 0, 1]])
+        self.coords = zmat.dot(self.coords)
+
+
 
 
 if __name__ == '__main__':
@@ -231,9 +264,22 @@ if __name__ == '__main__':
 
     print "\nCoordinate Systems:"
     print "p.length() ->", p.length()
-    print "For now it is not useful to convert coordinates from cartisian system to cylindrical or spherical. This functionality might be added in the future."
+    print "For now the class doesn't support convertion from cartisian system to cylindrical or spherical. This functionality might be added in the future."
 
     print "\nTransformations:"
+    p.translate(Point3d(10,-15,23.5))
+    print "p.translate(Point3d(10,-15,23.5)) ->", p
+    p = Point3d(1,1,0)
+    print "p = Point3d(1,1,0)"
+    p.rotateX(math.pi/2.0)
+    print "p.rotateX(math.pi/2.0) ->", p
+    p = Point3d(1,1,0)
+    p.rotateY(math.pi/2.0)
+    print "p.rotateY(math.pi/2.0) ->", p
+    p = Point3d(1,1,0)
+    p.rotateZ(math.pi/2.0)
+    print "p.rotateZ(math.pi/2.0) ->", p
+
 
 
 
