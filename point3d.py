@@ -1,4 +1,5 @@
 import numpy as np
+import math
 
 class Point3d(object):
     def __init__(self, x=0, y=0, z=0):
@@ -107,66 +108,85 @@ class Point3d(object):
         return self
 
     def next(self):
-        if self.iter >= self.coords.size:
+        if self.iter >= self.coords.size-1:
             self.iter = 0
             raise StopIteration
         else:
             self.iter += 1
             return self.coords[self.iter-1]
 
-    def __len__(self):
-        pass
+    def length(self):
+        return math.sqrt(self.x**2 + self.y**2 + self.z**2)
+
+
 
 if __name__ == '__main__':
     print "### Testing ###"
 
     print "\nCreation:"
+    # create with no arguments
     p = Point3d()
     print "Point3d()      ->", p
+    # create with x, y, z
     p = Point3d(1,2,3)
     print "Point3d(1,2,3) ->", p
+    # create with a list
     p = Point3d([1,2,3])
     print "Point3d([1,2,3]) ->", p
+    # create with a tuple
     p = Point3d((1,2,3))
     print "Point3d((1,2,3)) ->", p
+    # create with a np.array
     p = Point3d(np.array([1,2,3,1]))
     print "Point3d(np.array([1,2,3,1])) ->", p
+    # create a copy from other Point3d
     q = Point3d(p)
     print "q = Point3d(p)   ->", q
+    # copy a point
     print "q.copy() ->", q.copy()
 
     print "\nRepresentation:"
+    # what repr and str look like
     print "repr(p) ->", repr(p)
     print "str(p)  ->", str(p)
 
     print "\nGetters:"
+    # accessing x, y, and z directly
     print "p.x ->", p.x
     print "p.y ->", p.y
     print "p.z ->", p.z
+    # accessing the array directly
     print "p.coords    ->", p.coords
+    # accessing the positions in the array
     print "p.coords[0] ->", p.coords[0]
     print "p.coords[1] ->", p.coords[1]
     print "p.coords[2] ->", p.coords[2]
+    # accessing x, y, and z with indexes
     print "p[0] ->", p[0]
     print "p[1] ->", p[1]
     print "p[2] ->", p[2]
 
     print "\nSetters:"
+    # setting x, y, and z directly
     p.x = 10
     print "p.x = 10 ->", p.x
     p.y = 10
     print "p.y = 10 ->", p.y
     p.z = 10
     print "p.z = 10 ->", p.z
+    # setting the array passing a new np.array
+    # which you can do but is NOT RECOMMENDED
     p.coords = np.array([1,2,3])
     print "# This next one is not recommended at all."
     print "p.coords = np.array([1,2,3]) ->", p
+    # setting positions in the array
     p.coords[0] = 10
     print "p.coords[0] = 10 ->", p[0]
     p.coords[1] = 10
     print "p.coords[1] = 10 ->", p[1]
     p.coords[2] = 10
     print "p.coords[2] = 10 ->", p[2]
+    # using indexes to set x, y, and z
     p[0] = 1
     print "p[0] = 1 ->", p[0]
     p[1] = 1
@@ -177,6 +197,7 @@ if __name__ == '__main__':
     print "\nOperators:"
     i = Point3d(1,0,0)
     j = Point3d(0,1,0)
+    # addition and subtraction
     print "i = Point3d(1,0,0)\nj = Point3d(0,1,0)\n"
     print "+i ->", +i
     print "-i ->", -i
@@ -187,10 +208,12 @@ if __name__ == '__main__':
     i = Point3d(1,0,0)
     i -= j
     print "i -= j ->", i
+    # multiplication by scalar
     i = Point3d(1,0,0)
     print "i * 2  ->", i * 2
     i *= 2
     print "i *= 2 ->", i
+    # vector on vector operations
     i = Point3d(1,0,0)
     print "i.dot(j)   ->", i.dot(j)
     print "j.dot(i)   ->", j.dot(i)
@@ -199,8 +222,16 @@ if __name__ == '__main__':
 
 
     print "\nIterators:"
+    p = Point3d(1,1,1)
+    print "p = Point3d(1,1,1)"
+    for index, element in enumerate(p):
+        print "{0}: {1}".format(index, element)
+    print "list(p)  ->", list(p)
+    print "tuple(p) ->", tuple(p)
 
     print "\nCoordinate Systems:"
+    print "p.length() ->", p.length()
+    print "For now it is not useful to convert coordinates from cartisian system to cylindrical or spherical. This functionality might be added in the future."
 
     print "\nTransformations:"
 
